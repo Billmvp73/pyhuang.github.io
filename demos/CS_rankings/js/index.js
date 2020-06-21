@@ -63,5 +63,5 @@ var vm = new Vue(
     }
 )
 
-var app1 = Vue.component('app1', VueComponent1);
+new VueComponent1().$mount('#app1');
 var app2 = Vue.component('app2', VueComponent2);

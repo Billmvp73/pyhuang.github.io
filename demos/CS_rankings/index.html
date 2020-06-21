@@ -28,7 +28,8 @@
 
 	<div class="container">
 		<div id="app1">
-				<table v-for="direction in Directions" :key="direction.name">
+				<table>
+					<template v-for="direction in Directions">
 						<thead>
 							<tr>
 								<th>
@@ -49,6 +50,7 @@
 										:key="field.name">
 									</tr>
 						</tbody>
+					</template>
 				</table>
 		</div>
 			
