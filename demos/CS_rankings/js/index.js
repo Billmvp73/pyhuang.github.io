@@ -1,6 +1,23 @@
-var vm2 = new Vue(
+var VueComponent1 = Vue.extend({
+    template: '#app1',
+    data: function() {
+        return {
+            Directions: []
+        }
+    }
+})
+
+var VueComponent2=Vue.extend({
+    template: '#app2',
+    data: function() {
+        return {
+            output: []
+        }
+    }
+})
+var vm = new Vue(
     {
-        el: '#app2',
+        el: 'body',
         data:{
             checkedFields:[],
             Directions :[
@@ -44,4 +61,7 @@ var vm2 = new Vue(
             }
         }
     }
-)  
+)
+
+var app1 = Vue.component('app1', VueComponent1);
+var app2 = Vue.component('app2', VueComponent2);
