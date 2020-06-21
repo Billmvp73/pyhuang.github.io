@@ -1,7 +1,6 @@
-import Ranking from './Ranking.vue'
-
-new Vue(
+var vm2 = new Vue(
     {
+        el: '#app2',
         data:{
             checkedFields:[],
             Directions :[
@@ -28,9 +27,6 @@ new Vue(
             ],
             output:[]
         },
-        components: {
-            Ranking
-        },
         methods: {
             check: function(e){
                 console.log(this.checkedFields);
@@ -48,4 +44,4 @@ new Vue(
             }
         }
     }
-).$mount('#app2');
+)  
