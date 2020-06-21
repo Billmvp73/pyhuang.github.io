@@ -1,3 +1,5 @@
+import Ranking from './Ranking.vue'
+
 var vm2 = new Vue(
     {
         el: '#app2',
@@ -26,6 +28,9 @@ var vm2 = new Vue(
                 }
             ],
             output:[]
+        },
+        components: {
+            Ranking
         },
         methods: {
             check: function(e){
