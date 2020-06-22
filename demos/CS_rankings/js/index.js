@@ -1,3 +1,26 @@
+var checkbox_el = Vue.component('checkboxes', {
+    created(){
+        console.log('field', this.field);
+    },
+    props:['field', 'name'],
+    methods:{
+        check: function(value){
+            this.$parent.check(value);
+        }
+    },
+    template:`
+        <tr>
+            <label for="name">
+                {{field.name}}
+            </label>
+            <input type="checkbox" name="name" id="name"
+            :value="field.name" @change='check(field.name)'
+            :key="field.name">
+        </tr>
+    `
+})
+
+
 var faculty_el = Vue.component('faculty', {
 	created(){
 			console.log('faculty', this.faculty)
@@ -624,7 +647,8 @@ var vm = new Vue(
         },
 		components:{
 			ranking_el,
-			faculty_el
+            faculty_el,
+            checkbox_el
 		},
         methods: {
 			checkAll: function(direction, event){
