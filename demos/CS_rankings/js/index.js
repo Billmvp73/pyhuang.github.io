@@ -1,26 +1,3 @@
-var checkbox_el = Vue.component('checkboxes', {
-    created(){
-        console.log('field', this.field);
-    },
-    props:['field', 'name'],
-    methods:{
-        check: function(value){
-            this.$parent.check(value);
-        }
-    },
-    template:`
-        <tr>
-            <label for="name">
-                {{field.name}}
-            </label>
-            <input type="checkbox" name="name" id="name"
-            :value="field.name" @change='check(field.name)'
-            :key="field.name">
-        </tr>
-    `
-})
-
-
 var faculty_el = Vue.component('faculty', {
 	created(){
 			console.log('faculty', this.faculty)
@@ -51,14 +28,40 @@ var faculty_el = Vue.component('faculty', {
 		</tr>
 	`
 })
+
+var faculty_show = Vue.component('show_faculty', {
+	created(){
+		console.log()
+	},
+	props:['university', 'display_block'],
+	components:{
+		faculty_el
+	},
+	template:`
+	<tr>
+	<td colspan="4">
+		<div v-if="display_block">
+			<div class="table">
+				<table class="table table-sm table-striped">
+				<thead><tr><th></th><td><small><em><abbr title="Click on an author's name to go to their home page.">Faculty</abbr></em></small></td><td align="right"><small><em>&nbsp;&nbsp;<abbr title="Total number of publications (click for DBLP entry).">#&nbsp;Pubs</abbr> </em></small></td><td align="right"><small><em><abbr title="Count divided by number of co-authors">Adj.&nbsp;#</abbr></em></small></td></tr></thead>
+				<faculty v-for="faculty in university[1].faculty" :faculty="faculty" :key="faculty.name"></faculty>
+				</table>
+			</div>
+		</div>
+	</td>
+	</tr>
+	`
+})
 var ranking_el = Vue.component('Ranking', {
 	created(){
 		console.log('ranking', this.university)
 	},
-	props: ['university'],
-	data: function(){
-		return {
-			display_block: false
+	props: ['university', 'display_block'],
+	methods:{
+		updateShow: function(display_block){
+			display_block = !display_block
+			console.log(display_block)
+			this.$emit(display_block)
 		}
 	},
 	template: `
@@ -66,8 +69,8 @@ var ranking_el = Vue.component('Ranking', {
 	    	<td>
 			{{university[1].ranking+1}}&nbsp;
 			</td>
-			<span v-if="display_block" class="hovertip" @click="display_block=false;" :id="university[1].name+'-widget'"><font color="blue">▼</font></span>
-			<span v-else class="hovertip" @click="display_block=true;" :id="university[1].name+'-widget'"><font color="blue">►</font></span>
+			<span v-if="display_block" class="hovertip" @click="updateShow(display_block)" :id="university[1].name+'-widget'"><font color="blue">▼</font></span>
+			<span v-else class="hovertip" @click="updateShow(display_block)" :id="university[1].name+'-widget'"><font color="blue">►</font></span>
 			<td>
 			&nbsp;{{university[0]}}&nbsp;
 			</td>
@@ -77,16 +80,6 @@ var ranking_el = Vue.component('Ranking', {
             <td>
             {{university[1].faculty.length}}
             </td>
-			<td colspan="4">
-				<div v-if="display_block">
-					<div class="table">
-						<table class="table table-sm table-striped">
-						<thead><tr><th></th><td><small><em><abbr title="Click on an author's name to go to their home page.">Faculty</abbr></em></small></td><td align="right"><small><em>&nbsp;&nbsp;<abbr title="Total number of publications (click for DBLP entry).">#&nbsp;Pubs</abbr> </em></small></td><td align="right"><small><em><abbr title="Count divided by number of co-authors">Adj.&nbsp;#</abbr></em></small></td></tr></thead>
-						<faculty v-for="faculty in university[1].faculty" :faculty="faculty" :key="faculty.name"></faculty>
-						</table>
-					</div>
-				</div>
-			</td>
 		</tr>
 	  `
 })
@@ -97,6 +90,7 @@ var vm = new Vue(
         data:{
             checkedFields:[],
             sortedArray:[],
+			display_block: false,
             Directions :[
                 { 
 					isCheckAll: false,
@@ -648,7 +642,7 @@ var vm = new Vue(
 		components:{
 			ranking_el,
             faculty_el,
-            checkbox_el
+			faculty_show
 		},
         methods: {
 			checkAll: function(direction, event){
